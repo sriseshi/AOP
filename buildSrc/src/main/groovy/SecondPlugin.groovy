@@ -14,7 +14,7 @@ class SecondPlugin implements Plugin<Project> {
         System.out.println("========================");
         System.out.println("插件!");
         System.out.println("========================");
-//        project.extensions.getByType(AppExtension).registerTransform(new MyTransform(project));
+        project.extensions.getByType(AppExtension).registerTransform(new MyTransform(project));
     }
 }
 
@@ -84,7 +84,7 @@ class MyTransform extends Transform {
                         System.out.println("ctMethod = " + ctMethod);
 
                         String str = """android.util.Log.d("shi", "shixi");"""
-                        ctMethod.insertBefore(str)
+                        ctMethod.insertAt(14, str)
 
                         System.out.println("writeFile = " + path);
 
