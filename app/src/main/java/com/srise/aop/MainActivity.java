@@ -2,14 +2,17 @@ package com.srise.aop;
 
 import android.app.Activity;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+
 
 public class MainActivity extends Activity {
+    private static final String TAG = "shixi";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MyCall myCall = new MyCall();
+        myCall.myOutCall();
     }
 
     @Override

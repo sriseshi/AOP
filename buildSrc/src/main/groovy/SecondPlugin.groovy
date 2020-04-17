@@ -14,7 +14,7 @@ class SecondPlugin implements Plugin<Project> {
         System.out.println("========================");
         System.out.println("插件!");
         System.out.println("========================");
-        project.extensions.getByType(AppExtension).registerTransform(new MyTransform(project));
+//        project.extensions.getByType(AppExtension).registerTransform(new MyTransform(project));
     }
 }
 
