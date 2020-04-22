@@ -1,2 +1,5 @@
 rootProject.name='aop'
 include ':app'
+include ':aptlib'
+include ':aptprocess'
+include ':libannotation'
