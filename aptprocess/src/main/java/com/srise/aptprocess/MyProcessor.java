@@ -62,6 +62,8 @@ final public class MyProcessor extends AbstractProcessor {
         if (set.size() > 0) {
             for (Element element : roundEnvironment.getElementsAnnotatedWith(MyAnnotation.class)) {
                 VariableElement variableElement = (VariableElement) element;
+
+                //获取包含变量的主类
                 TypeElement typeElement = (TypeElement) variableElement.getEnclosingElement();
 
                 Set<VariableElement> elements = mHashMap.get(typeElement.getQualifiedName().toString());
@@ -81,11 +83,11 @@ final public class MyProcessor extends AbstractProcessor {
                 String fileName = null;
                 ClassName viewParaClassName = ClassName.get("android.view", "View");
 
-                MethodSpec methodSpec = null;
-                MethodSpec methodSpec2 = null;
+                MethodSpec constructorOne = null;
+                MethodSpec constructorTwo = null;
                 ParameterSpec baseActivityPara = null;
                 ParameterSpec viewPara = null;
-                MethodSpec.Builder builder = null;
+                MethodSpec.Builder constructorTwoBuilder = null;
 
                 for (VariableElement element : variableElements) {
                     TypeElement activityType = (TypeElement) element.getEnclosingElement();
@@ -95,13 +97,13 @@ final public class MyProcessor extends AbstractProcessor {
                                 .build();
                         viewPara = ParameterSpec.builder(viewParaClassName, "view").build();
 
-                        methodSpec = MethodSpec.constructorBuilder()
+                        constructorOne = MethodSpec.constructorBuilder()
                                 .addModifiers(Modifier.PUBLIC)
                                 .addParameter(baseActivityPara)
                                 .addStatement("this(activity, activity.getWindow().getDecorView())")
                                 .build();
 
-                        builder = MethodSpec.constructorBuilder()
+                        constructorTwoBuilder = MethodSpec.constructorBuilder()
                                 .addModifiers(Modifier.PUBLIC)
                                 .addParameter(baseActivityPara)
                                 .addParameter(viewPara);
@@ -121,25 +123,22 @@ final public class MyProcessor extends AbstractProcessor {
                     note(element.getSimpleName().toString());
                     MyAnnotation value = element.getAnnotation(MyAnnotation.class);
                     note(value.value() + "");
-                    builder.addStatement("activity.$N = ($N)view.findViewById(" + value.value() + ")",
+                    constructorTwoBuilder.addStatement("activity.$N = ($N)view.findViewById(" + value.value() + ")",
                             element.getSimpleName().toString(),
                             element.asType().toString()
                     );
                 }
 
-                methodSpec2 = builder.build();
+                constructorTwo = constructorTwoBuilder.build();
 
-                ClassName interfaceClassName = ClassName.get("com.srise.aptlib", "MyBinder");
-
-
-                TypeSpec helloWorld = TypeSpec.classBuilder(fileName)
+                TypeSpec binderClass = TypeSpec.classBuilder(fileName)
                         .addModifiers(Modifier.PUBLIC)
-                        .addSuperinterface(interfaceClassName)
-                        .addMethod(methodSpec)
-                        .addMethod(methodSpec2)
+                        .addSuperinterface(ClassName.get("com.srise.aptlib", "MyBinder"))
+                        .addMethod(constructorOne)
+                        .addMethod(constructorTwo)
                         .build();
 
-                JavaFile javaFile = JavaFile.builder(pkgName, helloWorld)
+                JavaFile javaFile = JavaFile.builder(pkgName, binderClass)
                         .addFileComment(" This codes are generated automatically. Do not modify!")
                         .build();
                 // write to file
