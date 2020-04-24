@@ -4,5 +4,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.squareup:javapoet:1.8.0'
     implementation project(':libannotation')
+    compileOnly files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 }
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8

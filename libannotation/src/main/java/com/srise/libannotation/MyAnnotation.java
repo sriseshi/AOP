@@ -1,5 +1,7 @@
 package com.srise.libannotation;
 
+import androidx.annotation.IdRes;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -8,5 +10,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.FIELD)
 public @interface MyAnnotation {
-    int value() default -1;
+    @IdRes int value() default -1;
 }

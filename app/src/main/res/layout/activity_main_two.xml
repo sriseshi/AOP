@@ -17,12 +17,4 @@
         android:layout_height="100dp"
         android:layout_below="@+id/txt" />
 
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_below="@+id/img"
-        android:text="click"
-        />
-
 </RelativeLayout>
