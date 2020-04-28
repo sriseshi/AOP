@@ -17,18 +17,15 @@ public class MainActivityTwo extends Activity {
     private static final String TAG = "shixi";
 
     @MyAnnotation(R.id.txt)
-//    @BindView(R.id.txt)
     TextView mView;
 
     @MyAnnotation(R.id.img)
-//    @BindView(R.id.img)
     ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_two);
-//        ButterKnife.bind(this);
         MyUtil.bind(this);
         mView.setText("2222222222W");
         mImageView.setBackgroundColor(Color.parseColor("#0000FF"));

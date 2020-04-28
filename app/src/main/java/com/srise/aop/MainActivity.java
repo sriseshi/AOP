@@ -12,29 +12,27 @@ import android.widget.TextView;
 import com.srise.aptlib.MyUtil;
 import com.srise.libannotation.MyAnnotation;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 public class MainActivity extends Activity {
     private static final String TAG = "shixi";
 
     @MyAnnotation(R.id.txt)
-//    @BindView(R.id.txt)
     TextView mView;
 
     @MyAnnotation(R.id.img)
-//    @BindView(R.id.img)
     ImageView mImageView;
 
     @MyAnnotation(R.id.btn)
-//    @BindView(R.id.img)
     Button mBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        ButterKnife.bind(this);
         MyUtil.bind(this);
         mView.setText("11111111111111W");
         mImageView.setBackgroundColor(Color.parseColor("#00FF00"));
@@ -47,6 +45,25 @@ public class MainActivity extends Activity {
         });
         MyCall myCall = new MyCall();
         myCall.myOutCall();
+        EventBus.getDefault().post(new MyEvent());
+        EventBus.getDefault().postSticky(new MyEvent());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessage(MyEvent myEvent){
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
